@@ -83,20 +83,11 @@ When submitting a PR:
 
 1. **Go to Actions tab**
 2. **Select "Deploy MkDocs to GitHub Pages"**
-3. **Check latest run**
-
-Status indicators:
-- 🟢 **Success**: Documentation deployed
-- 🟡 **In Progress**: Build running
-- 🔴 **Failed**: See logs for error
+3. **Review the latest workflow run**
 
 ### View Deployment Details
 
-```
-Actions → Workflow Runs → Latest Run → Deployments
-```
-
-Or directly access published site:
+Access the published site:
 
 ```
 https://your-org.github.io/tailwind-luna-theme/
@@ -274,16 +265,16 @@ pip list > requirements.txt
 
 1. Check **Settings** → **Pages** → Source is "GitHub Actions"
 2. Verify workflow runs successfully (green checkmark in Actions)
-3. Wait 1-2 minutes for site to be available
-4. Clear browser cache: Ctrl+Shift+Delete
+3. Verify repository is public
+4. Clear browser cache
 
 ### Access Issues
 
-| Problem | Solution |
-|---------|----------|
-| Site returns 404 | Wait 5 minutes, clear cache, check repo is public |
-| HTTPS certificate error | Wait 24 hours for cert provisioning (first time) |
-| Old content showing | Clear cache, check deployment timestamp |
+**404 Errors**: Verify repository is public and workflow completed successfully.
+
+**HTTPS Certificate**: GitHub Pages automatically provisions SSL certificates.
+
+**Old Content Showing**: Clear browser cache and verify latest deployment completed.
 
 ## Advanced Deployments
 
@@ -324,7 +315,7 @@ Now PRs require successful doc builds before merging.
 
 ### Caching
 
-Already included in workflow:
+The workflow includes Python dependency caching:
 
 ```yaml
 - uses: actions/setup-python@v4
@@ -332,7 +323,7 @@ Already included in workflow:
     cache: 'pip'
 ```
 
-Reduces workflow time by ~60% on subsequent runs.
+This improves build performance on subsequent runs.
 
 ### Parallel Builds
 
@@ -358,16 +349,14 @@ GitHub Pages automatically uses global CDN. No additional config needed.
 
 ## Summary
 
-| Phase | Duration | Action |
-|-------|----------|--------|
-| **Local Development** | Ongoing | Edit docs, test with `mkdocs serve` |
-| **Push to Main** | Instant | `git push origin main` |
-| **Workflow Run** | 2-3 min | GitHub Actions builds site |
-| **Deployment** | 30 sec | Deploy to GitHub Pages |
-| **Available** | Immediate | Site live at `/tailwind-luna-theme/` |
+**Process Flow**:
+1. Edit documentation locally in `docs/` directory
+2. Commit and push to `main` branch
+3. GitHub Actions automatically builds and deploys
+4. Site becomes available at `https://your-org.github.io/tailwind-luna-theme/`
 
 **Quick Links**:
-- View Runs: GitHub → **Actions**
+- GitHub Actions: `https://github.com/your-org/repo/actions`
 - Published Site: `https://your-org.github.io/tailwind-luna-theme/`
 - Workflow File: `.github/workflows/deploy-mkdocs.yml`
 
