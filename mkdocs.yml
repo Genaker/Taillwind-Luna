@@ -73,6 +73,10 @@ nav:
     - Clone & Local Install: composer/CLONE_AND_LOCAL_INSTALL.md
     - Local Path Repositories: composer/LOCAL_PATH_REPOSITORIES.md
     - Troubleshooting: composer/troubleshooting.md
+  - MkDocs Setup:
+    - Complete Setup: MKDOCS_COMPLETE_SETUP.md
+    - Quick Reference: MKDOCS_QUICK_REFERENCE.md
+    - Setup Guide: MKDOCS_SETUP.md
   - Theme Development:
     - Architecture: TAILWIND_EXTENSION_DEVELOPMENT.md
     - CSS Build: CSS_BUILD_ARCHITECTURE.md

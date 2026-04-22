@@ -14,11 +14,11 @@
     },
     "autoload": {
         "files": [
-            "registration.php"
+            "registration.php",
+            "Module/ThemeModule/registration.php"
         ],
         "psr-4": {
-            "Genaker\\ThemeTailwindLuna\\": "Module/ThemeModule/",
-            "Genaker\\ThemeTileWindLuna\\": "Module/ThemeModule/ThemeTileWindAlias/"
+            "Genaker\\ThemeTailwindLuna\\": "Module/ThemeModule/"
         }
     }
 }

@@ -737,17 +737,103 @@ vendor/bin/phpunit tests/
 
 ---
 
+## Tailwind Luna Theme - Path Repository Setup
+
+### For Local Development
+
+When developing the Tailwind Luna theme locally without publishing to Packagist, use path repositories in your Magento installation:
+
+#### Update Magento's `composer.json`
+
+```json
+{
+    "repositories": {
+        "genaker-theme": {
+            "type": "path",
+            "url": "/var/www/tailwind-luna-theme",
+            "options": {
+                "symlink": false
+            }
+        }
+    },
+    "require": {
+        "genaker/theme-frontend-tailwind-luna": "^1.0"
+    }
+}
+```
+
+> **Note:** The widget module (`Genaker_ThemeTailwindLuna`) is bundled inside the theme under `Module/ThemeModule/` and registered via the theme's autoloader. No separate `genaker/module-tailwind-luna-widgets` package or path repository is needed.
+
+#### Install Packages
+
+```bash
+cd /var/www/html
+
+# Install from local path (widget module is included inside the theme)
+composer update genaker/theme-frontend-tailwind-luna
+```
+
+#### Docker Configuration
+
+Mount the theme in `docker-compose.yml`:
+
+```yaml
+services:
+  php:
+    volumes:
+      - ../../luma-repo/magento:/var/www/html
+      - ../tailwind-luna-theme:/var/www/tailwind-luna-theme
+```
+
+Then install inside container:
+
+```bash
+docker-compose exec php composer update genaker/theme-frontend-tailwind-luna
+```
+
+#### Advantages
+
+✅ Work on local theme changes
+✅ Composer handles everything automatically
+✅ No need to publish to Packagist
+✅ Easy to test before publishing
+✅ Full integration with Magento
+
+#### Important Notes
+
+- Remove `"version": "1.0.0"` from theme's `composer.json` before publishing to Packagist
+- Use `"symlink": false` for Windows compatibility
+- Use `"symlink": true` for faster development on Unix/Linux (optional)
+
+### Switching Between Packagist and Path Repositories
+
+**From Path to Packagist:**
+
+```bash
+# Remove path repositories from Magento's composer.json
+composer require genaker/theme-frontend-tailwind-luna:^1.0
+
+# Composer will now use Packagist instead of local path
+```
+
+**From Packagist to Path:**
+
+```bash
+# Add path repositories back to Magento's composer.json
+# Then update to use local version
+composer update genaker/theme-frontend-tailwind-luna
+```
+
+---
+
 ## Summary
 
-| Task | Command |
-|------|---------|
-| Clone Package | `git clone <url>` |
-| Add to composer.json | Add "repositories" section with "type": "path" |
-| Install | `composer require vendor/package` |
-| Update | `composer update vendor/package` |
-| Validate | `composer validate` |
-| Enable Symlinks | Add `"symlink": true` to options |
-| Disable Symlinks | Add `"symlink": false` to options |
+| Scenario | Method | Reference |
+|----------|--------|-----------|
+| Local Development | Path Repository | [See above](#tailwind-luna-theme---path-repository-setup) |
+| Publishing to Packagist | Remove `version` field | [Installation Guide](INSTALLATION_GUIDE.md) |
+| Testing Before Publish | Path Repository | [See above](#tailwind-luna-theme---path-repository-setup) |
+| Production Installation | Packagist | [Installation Guide](INSTALLATION_GUIDE.md) |
 
 ---
 

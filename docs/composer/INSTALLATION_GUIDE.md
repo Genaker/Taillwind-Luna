@@ -437,6 +437,133 @@ docker-compose exec -T db mysql -umagento -pmagento123 magento -e "SHOW TABLES;"
 
 ---
 
+## Theme Installation via Composer
+
+### Install Tailwind Luna Theme from Packagist
+
+The Tailwind Luna theme is published on Packagist and can be installed into any Magento 2.4.7+ installation.
+
+#### Installation Steps
+
+```bash
+# In your Magento installation directory
+cd /var/www/html
+
+# Install via composer (widget module is bundled inside the theme)
+composer require genaker/theme-frontend-tailwind-luna
+```
+
+#### Latest Version
+
+The latest version is **1.0.4** with all fixes applied. Composer will automatically install the latest stable version:
+
+```bash
+# Packagist URL
+# https://packagist.org/packages/genaker/theme-frontend-tailwind-luna
+
+# Install latest
+composer update genaker/theme-frontend-tailwind-luna
+```
+
+#### Important: Version Configuration
+
+The theme's `composer.json` should **NOT have a hardcoded `version` field** to allow Packagist to properly recognize git tags:
+
+```json
+// ✅ CORRECT - Packagist recognizes all tags
+{
+    "name": "genaker/theme-frontend-tailwind-luna",
+    "type": "magento2-theme",
+    ...
+}
+
+// ❌ WRONG - Causes tag version mismatches
+{
+    "version": "1.0.0",
+    "name": "genaker/theme-frontend-tailwind-luna",
+    ...
+}
+```
+
+### Theme & Widget Module Registration
+
+The widget module (`Genaker_ThemeTailwindLuna`) is **bundled inside the theme** under `Module/ThemeModule/`. There is no separate `genaker/module-tailwind-luna-widgets` package — Composer registers both the theme and the module via the theme's autoloader:
+
+```json
+{
+    "autoload": {
+        "files": [
+            "registration.php",
+            "Module/ThemeModule/registration.php"
+        ],
+        "psr-4": {
+            "Genaker\\ThemeTailwindLuna\\": "Module/ThemeModule/"
+        }
+    }
+}
+```
+
+**Theme Registration** (`registration.php`)
+```php
+ComponentRegistrar::register(
+    ComponentRegistrar::THEME,
+    'frontend/Genaker/tailwind_luna',
+    __DIR__
+);
+```
+
+**Widget Module Registration** (`Module/ThemeModule/registration.php`)
+```php
+ComponentRegistrar::register(
+    ComponentRegistrar::MODULE,
+    'Genaker_ThemeTailwindLuna',
+    __DIR__
+);
+```
+
+These are automatically loaded via Magento's component registration system.
+
+### Docker Installation
+
+With tailwind-luna-theme mounted in Docker:
+
+```yaml
+# docker-compose.yml
+services:
+  php:
+    volumes:
+      - ../../luma-repo/magento:/var/www/html
+      - ../tailwind-luna-theme:/var/www/tailwind-luna-theme  # Add this
+```
+
+Then install inside container:
+
+```bash
+docker-compose exec php composer require genaker/theme-frontend-tailwind-luna
+```
+
+### Verification
+
+After installation:
+
+```bash
+# Check vendor directory
+ls -la vendor/genaker/
+
+# Expected:
+# drwxr-xr-x theme-frontend-tailwind-luna
+# (no separate module-tailwind-luna-widgets — it is bundled inside the theme)
+
+# Verify autoloader
+composer dump-autoload
+
+# Check module is registered
+bin/magento module:status | grep Genaker
+# Expected: Genaker_ThemeTailwindLuna
+```
+
+---
+
 ## Performance Tips
 
 1. **Use SSD** for `/var/www/html` mount point
