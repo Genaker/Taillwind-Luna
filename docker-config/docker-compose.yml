@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.6
+    container_name: magento-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: magento
+      MYSQL_USER: magento
+      MYSQL_PASSWORD: magento123
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - magento
+
+  php:
+    build: .
+    container_name: magento-php
+    working_dir: /var/www/html
+    environment:
+      PHP_MEMORY_LIMIT: 2G
+    volumes:
+      - ../../luma-repo/magento:/var/www/html
+      - ../:/var/www/tailwind-luna-theme
+      - ./php.ini:/usr/local/etc/php/conf.d/99-custom.ini
+    depends_on:
+      - db
+      - elasticsearch
+    networks:
+      - magento
+
+  elasticsearch:
+    image: elasticsearch:7.17.0
+    container_name: magento-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - magento
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    image: nginx:alpine
+    container_name: magento-nginx
+    ports:
+      - "0.0.0.0:8888:80"
+    volumes:
+      - ../../luma-repo/magento:/var/www/html
+      - ../:/var/www/tailwind-luna-theme
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - magento
+
+volumes:
+  db_data:
+  es_data:
+
+networks:
+  magento:
+    driver: bridge

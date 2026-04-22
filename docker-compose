@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Convenience wrapper to run docker-compose from the tailwind-luna-theme folder
+# This allows running: ./docker-compose <command> from the theme root
+
+cd "$(dirname "$0")/docker-config"
+exec docker-compose "$@"

@@ -1,0 +1,200 @@
+/* Custom MkDocs Material Theme Styles */
+
+:root {
+  --md-primary-fg-color: #1f6feb;
+  --md-primary-fg-color--light: #54aeff;
+  --md-primary-fg-color--dark: #1158c7;
+  --md-accent-fg-color: #ff6a00;
+  --md-default-fg-color: #2d2d2d;
+  --md-default-bg-color: #ffffff;
+}
+
+/* Dark mode customizations */
+[data-md-color-scheme="dark"] {
+  --md-default-fg-color: #e8e8e8;
+  --md-default-bg-color: #1e1e1e;
+}
+
+/* Code block styling */
+.codehilite, pre, code {
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 0.9rem;
+}
+
+/* Admonition styling */
+.admonition {
+  border-left-width: 4px;
+  border-radius: 2px;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+}
+
+.admonition.note {
+  border-left-color: #1f6feb;
+  background-color: rgba(31, 111, 235, 0.1);
+}
+
+.admonition.warning {
+  border-left-color: #ff6a00;
+  background-color: rgba(255, 106, 0, 0.1);
+}
+
+.admonition.tip {
+  border-left-color: #00d084;
+  background-color: rgba(0, 208, 132, 0.1);
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+[data-md-color-scheme="dark"] table th {
+  background-color: #2d2d2d;
+}
+
+[data-md-color-scheme="dark"] table tbody tr:hover {
+  background-color: #333333;
+}
+
+/* Link styling */
+a {
+  color: #1f6feb;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #54aeff;
+  text-decoration: underline;
+}
+
+/* Header anchor link styling */
+.header-link {
+  color: #ccc;
+  margin-left: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+h1:hover .header-link,
+h2:hover .header-link,
+h3:hover .header-link {
+  opacity: 1;
+}
+
+/* Navigation styling */
+.md-nav__link {
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.md-nav__link:hover {
+  background-color: rgba(31, 111, 235, 0.1);
+}
+
+/* Sidebar (TOC) styling */
+.md-sidebar {
+  position: sticky;
+  top: 0;
+}
+
+/* Content styling */
+.md-content {
+  max-width: 1200px;
+  padding: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 76.25rem) {
+  .md-content {
+    padding: 1rem;
+  }
+}
+
+/* Blockquote styling */
+blockquote {
+  border-left: 4px solid #1f6feb;
+  color: #666;
+  font-style: italic;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background-color: #f9f9f9;
+}
+
+[data-md-color-scheme="dark"] blockquote {
+  background-color: #2d2d2d;
+  color: #aaa;
+}
+
+/* List styling */
+ul, ol {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+
+li {
+  margin: 0.25rem 0;
+}
+
+/* Horizontal rule styling */
+hr {
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 1.5rem 0;
+}
+
+[data-md-color-scheme="dark"] hr {
+  border-top-color: #333;
+}
+
+/* Keyboard shortcut styling */
+kbd {
+  background-color: #f5f5f5;
+  border: 1px solid #d1d5da;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  display: inline-block;
+  font-family: "Fira Code", monospace;
+  font-size: 0.85em;
+  padding: 0.2rem 0.4rem;
+  vertical-align: middle;
+}
+
+[data-md-color-scheme="dark"] kbd {
+  background-color: #3d3d3d;
+  border-color: #555;
+}
+
+/* Definition list styling */
+dt {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+dd {
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+[data-md-color-scheme="dark"] dd {
+  color: #aaa;
+}

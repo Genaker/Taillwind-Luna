@@ -1,0 +1,97 @@
+site_name: Tailwind Luna Theme Documentation
+site_description: Complete documentation for Tailwind Luna Custom Theme with Magento 2.4.7
+site_author: Oro Development Team
+site_url: https://tailwind-luna.github.io/
+
+repo_url: https://github.com/your-org/tailwind-luna-theme
+repo_name: tailwind-luna-theme
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: light
+      primary: indigo
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: dark
+      primary: indigo
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+
+plugins:
+  - search
+  - offline
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: pymdownx.emoji.twemoji
+      emoji_generator: pymdownx.emoji.to_svg
+  - toc:
+      permalink: true
+      permalink_class: header-link
+  - meta
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/overview.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quick-start.md
+  - Docker Setup:
+    - Docker Compose: docker/DOCKER_COMPOSE_SETUP.md
+    - Configuration: docker/configuration.md
+  - Composer & Installation:
+    - Installation Guide: composer/INSTALLATION_GUIDE.md
+    - Clone & Local Install: composer/CLONE_AND_LOCAL_INSTALL.md
+    - Local Path Repositories: composer/LOCAL_PATH_REPOSITORIES.md
+    - Troubleshooting: composer/troubleshooting.md
+  - Theme Development:
+    - Architecture: TAILWIND_EXTENSION_DEVELOPMENT.md
+    - CSS Build: CSS_BUILD_ARCHITECTURE.md
+    - Warden Setup: WARDEN.md
+  - Documentation:
+    - Project Status: PROJECT_STATUS.md
+    - Structure: STRUCTURE.md
+  - GitHub Actions:
+    - Workflows: github-actions/workflows.md
+    - Deployment: github-actions/deployment.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-org
+    - icon: fontawesome/brands/docker
+      link: https://docker.com
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: Copyright &copy; 2024 - 2026 Oro Development Team

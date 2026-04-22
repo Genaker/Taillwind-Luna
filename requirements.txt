@@ -1,0 +1,6 @@
+mkdocs==1.5.3
+mkdocs-material==9.5.3
+mkdocs-offline==1.2.1
+python-frontmatter==1.0.1
+markdown==3.5.1
+pymdown-extensions==10.5
