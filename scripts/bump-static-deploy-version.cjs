@@ -10,11 +10,13 @@ const fs = require("fs");
 const path = require("path");
 
 const themeRoot = path.resolve(__dirname, "..");
-const defaultMagentoRoot = path.resolve(themeRoot, "..", "..");
+const { resolveMagentoRoot } = require(path.join(themeRoot, "web", "tailwind", "magento-root.cjs"));
+const defaultMagentoRoot = resolveMagentoRoot(themeRoot);
 const relativeDeployedVersion = path.join("pub", "static", "deployed_version.txt");
 
 /**
- * @param {string} [magentoRoot] — project root (parent of pub/). Defaults to two levels above this package.
+ * @param {string} [magentoRoot] — project root (parent of pub/). Defaults to the detected Magento root
+ *   (see web/tailwind/magento-root.cjs: MAGENTO_ROOT env, then nearest ancestor with bin/magento).
  */
 function bumpStaticDeployVersion(magentoRoot = defaultMagentoRoot) {
   const file = path.join(magentoRoot, relativeDeployedVersion);

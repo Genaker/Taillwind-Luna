@@ -43,7 +43,8 @@ flowchart LR
 
 | Piece | Role |
 |--------|------|
-| **`web/tailwind/sources.cjs`** | Single place for **SCSS merge globs** (`scssRootGlobs`) and **Tailwind content globs** (`contentFiles`). `tailwind.config.js` imports `contentFiles` and merges optional `_content-roots.json`. |
+| **`web/tailwind/magento-root.cjs`** | Resolves the **Magento root** the Magento-wide globs and `pub/static` copies are built from: **`MAGENTO_ROOT`** env → nearest ancestor of the theme containing **`bin/magento`** (or `app/etc` + `pub`) → legacy two-levels-up fallback. Needed because the package sits at different depths per install: **`vendor/genaker/theme-frontend-tailwind-luna`** (Composer, 3 levels), **`app/design/frontend/Genaker/tailwind_luna`** (clone, 5 levels), or a symlinked clone (set `MAGENTO_ROOT`). |
+| **`web/tailwind/sources.cjs`** | Single place for **SCSS merge globs** (`scssRootGlobs`) and **Tailwind content globs** (`contentFiles`); Magento-wide entries (`vendor`, `app/code`, `src`, `app/design`) are absolute paths under the resolved **`magentoRoot`** (also exported). `tailwind.config.js` imports `contentFiles` and merges optional `_content-roots.json`. |
 | **`scripts/merge-scss.cjs`** | Collects all matching `*.scss`, sorts by **tier** + path (see [CSS_MERGE.md](./CSS_MERGE.md)), concatenates into **`web/tailwind/_merged.scss`**, compiles with **Sass** into **`web/tailwind/_merged.css`**, writes **`web/tailwind/_content-roots.json`**. Flags: **`--minify`**, **`--list`**, **`--verbose`**, **`--source-map`**. |
 | **`web/tailwind/scss-config.cjs`** | Loads layered **`scss.config.json`** (theme + each module `…/web/tailwind/`), merges **`mergeRoots`**, **`exclude`**, **`contentFiles`**, **`tier`**, **`pubStaticPath(s)`**. Also discovers and loads all **`styles.yaml`** files (see below). Unknown keys warn. |
 | **`web/tailwind/input.css`** | Tailwind entry: **`@import "./_merged.css"` must come first** (before `@tailwind`), then `@tailwind base/components/utilities`. See [CSS_MERGE.md](./CSS_MERGE.md). |
@@ -56,7 +57,7 @@ flowchart LR
 | **`scripts/copy-tailwind-to-pub.cjs`** | Copies `web/css/tailwind.css` into each configured **`pub/static/frontend/.../css/`** path (both registered theme codes). Replaces symlinks safely. |
 | **`scripts/bump-static-deploy-version.cjs`** | Writes **`pub/static/deployed_version.txt`** (Unix ms timestamp) for cache busting. |
 | **`scripts/watch-tailwind.cjs`** | **Chokidar** watches theme `web/tailwind` and Magento **`vendor` / `app/code` / `src`** `**/view/frontend/web/tailwind/**/*.{scss,json}`; debounced **re-merge + Tailwind** (Tailwind’s own **`--watch`** does not re-run merge for vendor/module SCSS). |
-| **`npm run test:scss`** | Runs **`merge-scss-modules.test.cjs`** + **`merge-scss-config.test.cjs`** only (no full **`build:tailwind`**). |
+| **`npm run test:scss`** | Runs **`magento-root.test.cjs`** + **`merge-scss-modules.test.cjs`** + **`merge-scss-config.test.cjs`** only (no full **`build:tailwind`**). |
 
 ## Browser targets (Autoprefixer)
 

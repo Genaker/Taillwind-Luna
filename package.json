@@ -20,7 +20,7 @@
     "build:tailwind:prod": "bash scripts/build-tailwind-prod.sh",
     "build:css": "bash scripts/build-css.sh",
     "watch:tailwind": "node scripts/watch-tailwind.cjs",
-    "test:scss": "node scripts/tests/merge-scss-modules.test.cjs && node scripts/tests/merge-scss-config.test.cjs",
+    "test:scss": "node scripts/tests/magento-root.test.cjs && node scripts/tests/merge-scss-modules.test.cjs && node scripts/tests/merge-scss-config.test.cjs",
     "test:build": "node scripts/tests/build.test.cjs && npm run test:scss",
     "e2e:create-user": "node e2e/scripts/create-user-cli.cjs",
     "test:e2e": "playwright test --config=playwright.config.ts",

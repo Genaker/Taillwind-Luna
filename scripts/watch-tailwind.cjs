@@ -10,7 +10,7 @@ const { execSync } = require("child_process");
 const chokidar = require("chokidar");
 
 const themeRoot = path.resolve(__dirname, "..");
-const magentoRoot = path.resolve(themeRoot, "..", "..");
+const { magentoRoot } = require(path.join(themeRoot, "web", "tailwind", "sources.cjs"));
 
 const patterns = [
   path.join(themeRoot, "web", "tailwind", "**", "*.{scss,css}"),

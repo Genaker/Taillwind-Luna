@@ -36,7 +36,7 @@ const os = require("os");
 const { execSync, spawnSync } = require("child_process");
 
 const themeRoot = path.resolve(__dirname, "..", "..");
-const magentoRoot = path.resolve(themeRoot, "..", "..");
+const { magentoRoot } = require(path.join(themeRoot, "web", "tailwind", "sources.cjs"));
 const mergedPath = path.join(themeRoot, "web", "tailwind", "_merged.scss");
 const cfgPath = path.join(themeRoot, "web", "tailwind", "scss.config.json");
 

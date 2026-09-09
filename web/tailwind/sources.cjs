@@ -1,26 +1,35 @@
 /**
  * Single source of truth for SCSS merge roots and Tailwind content globs.
- * Paths are relative to the theme package root (parent of web/tailwind).
+ * Theme-local paths are relative to the theme package root (parent of web/tailwind).
+ * Magento-wide paths (vendor, app/code, src, app/design) are absolute, built from the resolved
+ * Magento root — see magento-root.cjs. A fixed "../.." only holds for one install layout.
  */
 const path = require("path");
+const { resolveMagentoRoot } = require("./magento-root.cjs");
 
 const themeRoot = path.join(__dirname, "..", "..");
+const magentoRoot = resolveMagentoRoot(themeRoot);
+
+/** Absolute, forward-slash glob under the Magento root (glob patterns never use backslashes). */
+function fromMagento(rel) {
+  return path.join(magentoRoot, rel).replace(/\\/g, "/");
+}
 
 /** @type {string[]} */
 const scssRootGlobs = [
   "web/tailwind/modules/**/*.scss",
   "web/tailwind/extensions/**/*.scss", // merge order: after modules (see scripts/merge-scss.cjs)
   // Magento module SCSS (same path in vendor, app/code, or src): …/view/frontend/web/tailwind/*.scss
-  "../../vendor/magento/module-*/view/frontend/web/tailwind/**/*.scss",
-  "../../app/code/*/*/view/frontend/web/tailwind/**/*.scss",
-  "../../src/**/view/frontend/web/tailwind/**/*.scss",
+  fromMagento("vendor/magento/module-*/view/frontend/web/tailwind/**/*.scss"),
+  fromMagento("app/code/*/*/view/frontend/web/tailwind/**/*.scss"),
+  fromMagento("src/**/view/frontend/web/tailwind/**/*.scss"),
 ];
 
 /** Optional layered merge config (theme first, then these paths, sorted). See scss-config.cjs */
 const scssConfigGlobs = [
-  "../../vendor/magento/module-*/view/frontend/web/tailwind/scss.config.json",
-  "../../app/code/*/*/view/frontend/web/tailwind/scss.config.json",
-  "../../src/**/view/frontend/web/tailwind/scss.config.json",
+  fromMagento("vendor/magento/module-*/view/frontend/web/tailwind/scss.config.json"),
+  fromMagento("app/code/*/*/view/frontend/web/tailwind/scss.config.json"),
+  fromMagento("src/**/view/frontend/web/tailwind/scss.config.json"),
 ];
 
 /**
@@ -31,12 +40,12 @@ const scssConfigGlobs = [
 const stylesYamlGlobs = [
   "styles.yaml",
   "styles.yml",
-  "../../vendor/magento/module-*/styles.yaml",
-  "../../vendor/magento/module-*/styles.yml",
-  "../../app/code/*/*/styles.yaml",
-  "../../app/code/*/*/styles.yml",
-  "../../src/**/styles.yaml",
-  "../../src/**/styles.yml",
+  fromMagento("vendor/magento/module-*/styles.yaml"),
+  fromMagento("vendor/magento/module-*/styles.yml"),
+  fromMagento("app/code/*/*/styles.yaml"),
+  fromMagento("app/code/*/*/styles.yml"),
+  fromMagento("src/**/styles.yaml"),
+  fromMagento("src/**/styles.yml"),
 ];
 
 /** @type {string[]} */
@@ -47,18 +56,18 @@ const contentFiles = [
   "./Magento_*/web/templates/**/*.html",
   "./web/tailwind/**/*.scss",
   "./web/tailwind/css-safelist.html",
-  "../../vendor/magento/module-*/view/frontend/templates/**/*.phtml",
-  "../../vendor/magento/module-*/view/frontend/layout/**/*.xml",
-  "../../vendor/magento/module-*/view/frontend/web/template/**/*.html",
-  "../../vendor/magento/module-*/view/frontend/web/tailwind/**/*.scss",
-  "../../app/code/*/*/view/frontend/templates/**/*.phtml",
-  "../../app/code/*/*/view/frontend/layout/**/*.xml",
-  "../../app/code/*/*/view/frontend/web/template/**/*.html",
-  "../../app/code/*/*/view/frontend/web/tailwind/**/*.scss",
-  "../../app/design/frontend/*/*/Magento_*/templates/**/*.phtml",
-  "../../app/design/frontend/*/*/Magento_*/layout/**/*.xml",
-  "../../src/**/view/frontend/templates/**/*.phtml",
-  "../../src/**/view/frontend/web/tailwind/**/*.scss",
+  fromMagento("vendor/magento/module-*/view/frontend/templates/**/*.phtml"),
+  fromMagento("vendor/magento/module-*/view/frontend/layout/**/*.xml"),
+  fromMagento("vendor/magento/module-*/view/frontend/web/template/**/*.html"),
+  fromMagento("vendor/magento/module-*/view/frontend/web/tailwind/**/*.scss"),
+  fromMagento("app/code/*/*/view/frontend/templates/**/*.phtml"),
+  fromMagento("app/code/*/*/view/frontend/layout/**/*.xml"),
+  fromMagento("app/code/*/*/view/frontend/web/template/**/*.html"),
+  fromMagento("app/code/*/*/view/frontend/web/tailwind/**/*.scss"),
+  fromMagento("app/design/frontend/*/*/Magento_*/templates/**/*.phtml"),
+  fromMagento("app/design/frontend/*/*/Magento_*/layout/**/*.xml"),
+  fromMagento("src/**/view/frontend/templates/**/*.phtml"),
+  fromMagento("src/**/view/frontend/web/tailwind/**/*.scss"),
 ];
 
 /** Primary storefront theme code (see registration.php — same package also registers win_luna). */
@@ -72,6 +81,7 @@ const defaultPubStaticPaths = [
 
 module.exports = {
   themeRoot,
+  magentoRoot,
   scssRootGlobs,
   scssConfigGlobs,
   stylesYamlGlobs,
