@@ -142,7 +142,7 @@ assert(checkoutCssSize > 1000, `checkout.css is non-trivial (${checkoutCssSize} 
 // ---------------------------------------------------------------------------
 console.log("\n[test] 6 — copy-tailwind-to-pub.cjs copies to pub/static (all registered theme paths)");
 // ---------------------------------------------------------------------------
-const magentoRoot = path.resolve(themeRoot, "..", "..");
+const magentoRoot = sources.magentoRoot;
 const pubPaths = sources.defaultPubStaticPaths || [sources.defaultPubStaticPath];
 const srcSize = fs.statSync(tailwindCssPath).size;
 for (const rel of pubPaths) {

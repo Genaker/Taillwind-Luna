@@ -11,12 +11,11 @@ const path = require("path");
 const { bumpStaticDeployVersion } = require("./bump-static-deploy-version.cjs");
 
 const themeRoot = path.resolve(__dirname, "..");
-const magentoRoot = path.resolve(themeRoot, "..", "..");
 
 /** Files under web/css/ to mirror into each pub/static theme path */
 const FILES_TO_COPY = ["tailwind.css", "tailwind.min.css", "checkout.min.css"];
 const { loadMergedScssConfig } = require(path.join(themeRoot, "web", "tailwind", "scss-config.cjs"));
-const { defaultPubStaticPaths } = require(path.join(themeRoot, "web", "tailwind", "sources.cjs"));
+const { defaultPubStaticPaths, magentoRoot } = require(path.join(themeRoot, "web", "tailwind", "sources.cjs"));
 
 /** @type {string[]} */
 let destinations = [...defaultPubStaticPaths];

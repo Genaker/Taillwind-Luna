@@ -12,7 +12,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 
 const themeRoot = path.resolve(__dirname, "..", "..");
-const magentoRoot = path.resolve(themeRoot, "..", "..");
+const { magentoRoot } = require(path.join(themeRoot, "web", "tailwind", "sources.cjs"));
 
 const vendorFixtureRoot = path.join(
   magentoRoot,
@@ -92,12 +92,16 @@ try {
 
   assert(merged.includes(VENDOR_MARKER), "_merged.scss contains vendor/magento/module-merge-test SCSS");
   assert(merged.includes(SRC_MARKER), "_merged.scss contains src/**/view/.../tailwind SCSS");
+  // The header lists files relative to the theme root (see merge-scss.cjs). When the theme is a
+  // Composer install under vendor/, the shared "vendor/" ancestor drops out of that relative path
+  // (../../magento/module-merge-test/...), so compare against the same computation, not a literal.
+  const relFromTheme = (abs) => path.relative(themeRoot, abs).replace(/\\/g, "/");
   assert(
-    merged.includes("vendor/magento/module-merge-test/view/frontend/web/tailwind/_merge_test_vendor.scss"),
+    merged.includes(relFromTheme(path.join(vendorFixtureRoot, "_merge_test_vendor.scss"))),
     "_merged.scss header lists vendor fixture path",
   );
   assert(
-    merged.includes("src/merge-test-module/view/frontend/web/tailwind/_merge_test_src.scss"),
+    merged.includes(relFromTheme(path.join(srcFixtureRoot, "_merge_test_src.scss"))),
     "_merged.scss header lists src fixture path",
   );
 
